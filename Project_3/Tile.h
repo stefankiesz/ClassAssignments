@@ -12,15 +12,7 @@ class Tile
 	sf::Sprite revTile;
 	sf::Sprite flag;
 	sf::Sprite bomb;
-	//vector<sf::Sprite> nums;
-	/*sf::Sprite num1;
-	sf::Sprite num2;
-	sf::Sprite num3;
-	sf::Sprite num4;
-	sf::Sprite num5;
-	sf::Sprite num6;
-	sf::Sprite num7;
-	sf::Sprite num8;*/
+	
 	sf::Sprite numAdjBombs;
 
 
@@ -28,6 +20,7 @@ class Tile
 	bool flagged;
 	bool hasBomb;
 	int adjBombs;
+	bool debugOn;
 
 public:
 	Tile();
@@ -41,5 +34,6 @@ public:
 	void addAdjBomb();
 	int getAdjBombs();
 	void setNum();
+	void ToggleDebug();
 };
 

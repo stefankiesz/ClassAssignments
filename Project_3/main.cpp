@@ -100,8 +100,13 @@ int main()
                         {
                             tiles[i].RevealTile();
                         }
-                            
-
+                    }
+                    if (debug.getGlobalBounds().contains(mousePosition))
+                    {
+                        for (unsigned int i = 0; i < tiles.size(); i++)
+                        {
+                           tiles[i].ToggleDebug();
+                        }
                     }
                 }
 

@@ -14,7 +14,7 @@ int main()
 {
     int columns = 22;
     int rows = 16;
-    int bombs = 20;
+    int bombs = 50;
 
 
     
@@ -42,7 +42,22 @@ int main()
 
     for (int i = 0; i < tiles.size(); i++)
     {
-        tiles[i].setAdjBombs();
+        if(i - columns >= 0 && tiles[i - columns].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i - columns + 1 >= 0 && tiles[i - columns + 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i - columns - 1 >= 0 && (i - columns) % columns != 0 && tiles[i - columns - 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + columns < tiles.size() && tiles[i + columns].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + columns + 1 < tiles.size() && tiles[i + columns + 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + columns - 1 < tiles.size() && tiles[i + columns - 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i - 1 >= 0 && tiles[i-1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + 1 < tiles.size() && tiles[i + 1].getHasBomb())
+            tiles[i].addAdjBomb();
     }
     
 
@@ -83,6 +98,7 @@ int main()
                         if (tiles[i].GetBounds().contains(mousePosition))
                         {
                             tiles[i].RevealTile();
+                            cout << tiles[i].getAdjBombs() << endl;
                         }
                             
 
@@ -124,4 +140,7 @@ int main()
 
     return 0;
 }
+
+
+
 

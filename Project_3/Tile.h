@@ -24,6 +24,7 @@ public:
 	void ToggleFlag();
 	void PlaceBomb();
 	bool getHasBomb();
-	void setAdjBombs();
+	void addAdjBomb();
+	int getAdjBombs();
 };
 

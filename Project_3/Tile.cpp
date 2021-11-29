@@ -66,7 +66,12 @@ bool Tile::getHasBomb()
 	return hasBomb;
 }
 
-void Tile::setAdjBombs()
+void Tile::addAdjBomb()
 {
+	adjBombs++;
+}
 
+int Tile::getAdjBombs()
+{
+	return adjBombs;
 }

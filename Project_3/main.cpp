@@ -58,6 +58,7 @@ int main()
             tiles[i].addAdjBomb();
         if (i + 1 < tiles.size() && (i+1) % columns != 0 && tiles[i + 1].getHasBomb())
             tiles[i].addAdjBomb();
+        tiles[i].setNum();
     }
     
 
@@ -98,7 +99,6 @@ int main()
                         if (tiles[i].GetBounds().contains(mousePosition))
                         {
                             tiles[i].RevealTile();
-                            cout << tiles[i].getAdjBombs() << endl;
                         }
                             
 

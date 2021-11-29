@@ -9,7 +9,7 @@ Tile::Tile()
 	flag.setTexture(TextureManager::GetTexture("flag"));
 	bomb.setTexture(TextureManager::GetTexture("mine"));
 
-	hidden = true;
+	hidden = false;
 	flagged = false;
 	hasBomb = false;
 	adjBombs = 0;

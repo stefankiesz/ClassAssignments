@@ -44,19 +44,19 @@ int main()
     {
         if(i - columns >= 0 && tiles[i - columns].getHasBomb())
             tiles[i].addAdjBomb();
-        if (i - columns + 1 >= 0 && tiles[i - columns + 1].getHasBomb())
+        if (i - columns + 1 >= 0 && (i - columns + 1) % columns != 0 && tiles[i - columns + 1].getHasBomb())
             tiles[i].addAdjBomb();
         if (i - columns - 1 >= 0 && (i - columns) % columns != 0 && tiles[i - columns - 1].getHasBomb())
             tiles[i].addAdjBomb();
         if (i + columns < tiles.size() && tiles[i + columns].getHasBomb())
             tiles[i].addAdjBomb();
-        if (i + columns + 1 < tiles.size() && tiles[i + columns + 1].getHasBomb())
+        if (i + columns + 1 < tiles.size() && (i + columns + 1) % columns != 0 && tiles[i + columns + 1].getHasBomb())
             tiles[i].addAdjBomb();
-        if (i + columns - 1 < tiles.size() && tiles[i + columns - 1].getHasBomb())
+        if (i + columns - 1 < tiles.size() && (i - columns) % columns != 0 && tiles[i + columns - 1].getHasBomb())
             tiles[i].addAdjBomb();
-        if (i - 1 >= 0 && tiles[i-1].getHasBomb())
+        if (i - 1 >= 0 && (i) % columns != 0 && tiles[i-1].getHasBomb())
             tiles[i].addAdjBomb();
-        if (i + 1 < tiles.size() && tiles[i + 1].getHasBomb())
+        if (i + 1 < tiles.size() && (i+1) % columns != 0 && tiles[i + 1].getHasBomb())
             tiles[i].addAdjBomb();
     }
     

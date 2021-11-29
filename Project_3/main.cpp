@@ -40,6 +40,10 @@ int main()
         tiles[num].PlaceBomb();
     }
 
+    for (int i = 0; i < tiles.size(); i++)
+    {
+        tiles[i].setAdjBombs();
+    }
     
 
     sf::Sprite smiley;

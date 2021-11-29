@@ -13,6 +13,7 @@ class Tile
 	bool hidden;
 	bool flagged;
 	bool hasBomb;
+	int adjBombs;
 
 public:
 	Tile();
@@ -23,5 +24,6 @@ public:
 	void ToggleFlag();
 	void PlaceBomb();
 	bool getHasBomb();
+	void setAdjBombs();
 };
 

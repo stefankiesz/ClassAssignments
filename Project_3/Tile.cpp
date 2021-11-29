@@ -12,6 +12,7 @@ Tile::Tile()
 	hidden = true;
 	flagged = false;
 	hasBomb = false;
+	adjBombs = 0;
 }
 
 void Tile::SetPosition(float xPos, float yPos)
@@ -63,4 +64,9 @@ void Tile::PlaceBomb()
 bool Tile::getHasBomb()
 {
 	return hasBomb;
+}
+
+void Tile::setAdjBombs()
+{
+
 }

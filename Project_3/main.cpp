@@ -5,19 +5,30 @@
 #include <unordered_map>
 
 #include "TextureManager.h"
+#include "Tile.h"
 
 using namespace std;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
-    sf::Sprite hiddenTile(TextureManager::GetTexture("tile_hidden"));
+    int columns = 22;
+    int rows = 16;
+    
+    sf::RenderWindow window(sf::VideoMode(columns * 32, rows*32 + 88), "Mine Sweeper");
 
-    sf::Texture texture;
-    //texture.loadFromFile("C:/Users/Stefan/Desktop/Project_Minesweeper/images/tile_hidden.png");
-    //texture.loadFromFile("images/tile_hidden.png");
+    Tile myTile;
+    myTile.SetPosition(100, 200);
+    vector<Tile> tiles;
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            myTile.SetPosition(32 * j, 32 * i);
+            tiles.push_back(myTile);
+        }
+        
+    }
 
-    //sf::Sprite hiddenTile(texture);
 
     while (window.isOpen())
     {
@@ -29,34 +40,16 @@ int main()
         }
 
         window.clear();
-        window.draw(hiddenTile);
+       
+        for (int i = 0; i < tiles.size(); i++)
+        {
+            tiles[i].Draw(window);
+        }
         window.display();
     }
 
-    TextureManager::Clear();
+    //TextureManager::Clear();
 
     return 0;
 }
 
-//int main()
-//{
-//    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-//    sf::CircleShape shape(100.f);
-//    shape.setFillColor(sf::Color::Green);
-//
-//    while (window.isOpen())
-//    {
-//        sf::Event event;
-//        while (window.pollEvent(event))
-//        {
-//            if (event.type == sf::Event::Closed)
-//                window.close();
-//        }
-//
-//        window.clear();
-//        window.draw(shape);
-//        window.display();
-//    }
-//
-//    return 0;
-//}

@@ -7,6 +7,7 @@ class Tile
 	sf::Sprite hiddenTile;
 	sf::Sprite revTile;
 	sf::Sprite flag;
+	sf::Sprite bomb;
 
 
 	bool hidden;
@@ -20,6 +21,7 @@ public:
 	sf::FloatRect GetBounds();
 	void RevealTile();
 	void ToggleFlag();
-
+	void PlaceBomb();
+	bool getHasBomb();
 };
 

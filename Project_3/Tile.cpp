@@ -7,6 +7,7 @@ Tile::Tile()
 	hiddenTile.setTexture(TextureManager::GetTexture("tile_hidden"));
 	revTile.setTexture(TextureManager::GetTexture("tile_revealed"));
 	flag.setTexture(TextureManager::GetTexture("flag"));
+	bomb.setTexture(TextureManager::GetTexture("mine"));
 
 	hidden = true;
 	flagged = false;
@@ -18,6 +19,7 @@ void Tile::SetPosition(float xPos, float yPos)
 	hiddenTile.setPosition(xPos, yPos);
 	revTile.setPosition(xPos, yPos);
 	flag.setPosition(xPos, yPos);
+	bomb.setPosition(xPos, yPos);
 }
 
 void Tile::Draw(sf::RenderWindow& window)
@@ -29,7 +31,11 @@ void Tile::Draw(sf::RenderWindow& window)
 			window.draw(flag);
 	}
 	else
+	{
 		window.draw(revTile);
+		if (hasBomb)
+			window.draw(bomb);
+	}		
 }
 
 sf::FloatRect Tile::GetBounds()
@@ -47,4 +53,14 @@ void Tile::ToggleFlag()
 {
 	if (hidden)
 		flagged = !flagged;
+}
+
+void Tile::PlaceBomb()
+{
+	hasBomb = true;
+}
+
+bool Tile::getHasBomb()
+{
+	return hasBomb;
 }

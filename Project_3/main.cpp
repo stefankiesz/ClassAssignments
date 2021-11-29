@@ -14,7 +14,7 @@ int main()
 {
     int columns = 22;
     int rows = 16;
-    int bombs = 10;
+    int bombs = 20;
 
 
     
@@ -36,8 +36,11 @@ int main()
     vector<int> bombIndexes;
     for (int i = 0; i < bombs; i++)
     {
-        bombIndexes.push_back(Random::Int(0, tiles.size() - 1));
+        int num = Random::Int(0, tiles.size() - 1);
+        tiles[num].PlaceBomb();
     }
+
+    
 
     sf::Sprite smiley;
     smiley.setTexture(TextureManager::GetTexture("face_happy"));
@@ -74,7 +77,11 @@ int main()
                     for (unsigned int i = 0; i < tiles.size(); i++)
                     {
                         if (tiles[i].GetBounds().contains(mousePosition))
+                        {
                             tiles[i].RevealTile();
+                        }
+                            
+
                     }
                 }
 

@@ -23,6 +23,7 @@ Tile::Tile()
 	hasBomb = false;
 	adjBombs = 0;
 	debugOn = false;
+	adjChecked = false;
 }
 
 void Tile::SetPosition(float xPos, float yPos)
@@ -111,4 +112,19 @@ void Tile::setNum()
 void Tile::ToggleDebug()
 {
 	debugOn = !debugOn;
+}
+
+bool Tile::GetHidden()
+{
+	return hidden;
+}
+
+bool Tile::GetAdjChecked()
+{
+	return adjChecked;
+}
+
+void Tile::SetAdjCheckedTrue()
+{
+	adjChecked = true;
 }

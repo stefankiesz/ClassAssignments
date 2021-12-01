@@ -21,6 +21,8 @@ class Tile
 	bool hasBomb;
 	int adjBombs;
 	bool debugOn;
+	bool adjChecked;
+
 
 public:
 	Tile();
@@ -35,5 +37,8 @@ public:
 	int getAdjBombs();
 	void setNum();
 	void ToggleDebug();
+	bool GetHidden();
+	bool GetAdjChecked();
+	void SetAdjCheckedTrue();
 };
 

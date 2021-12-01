@@ -10,11 +10,14 @@
 
 using namespace std;
 
+
+void ClearAdj(vector<Tile>& tiles, int columns, int i);
+
 int main()
 {
-    int columns = 22;
+    int columns = 25;
     int rows = 16;
-    int bombs = 50;
+    int bombs = 55;
 
 
     
@@ -94,11 +97,12 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     sf::Vector2f mousePosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-                    for (unsigned int i = 0; i < tiles.size(); i++)
+                    for ( int i = 0; i < tiles.size(); i++)
                     {
                         if (tiles[i].GetBounds().contains(mousePosition))
                         {
                             tiles[i].RevealTile();
+                            ClearAdj(tiles, columns, i);
                         }
                     }
                     if (debug.getGlobalBounds().contains(mousePosition))
@@ -147,5 +151,46 @@ int main()
 }
 
 
+void ClearAdj(vector<Tile>& tiles, int columns, int i)
+{
+    //if (i - columns >= 0 && tiles[i - columns].getAdjBombs() == 0)
+    if (i - columns >= 0)
+    {
+        tiles[i - columns].RevealTile();
+        if (tiles[i - columns].getAdjBombs() == 0)
+            ClearAdj(tiles, columns, i - columns);
+    }
+    if (i - columns + 1 >= 0 && (i - columns + 1) % columns != 0)
+    {
+        tiles[i - columns + 1].RevealTile();
+        if (tiles[i - columns + 1].getAdjBombs() == 0)
+            ClearAdj(tiles, columns, i - columns + 1);
+    }
+    if (i - columns - 1 >= 0 && (i - columns) % columns != 0)
+    {
+        tiles[i - columns - 1].RevealTile();
+        if (tiles[i - columns - 1].getAdjBombs() == 0)
+            ClearAdj(tiles, columns, i - columns - 1);
+    }
+    //if (i + columns < tiles.size())
+    //{
+    //    cout << tiles.size() << endl;
+    //    cout << i << endl;
+    //    cout << columns << endl;
+    //    
+    //    tiles[i + columns].RevealTile();
+    //    if (tiles[i + columns].getAdjBombs() == 0)
+    //    { }
+    //        //ClearAdj(tiles, columns, i + columns);
+    //}    
+    if (i + columns + 1 < tiles.size() && (i + columns + 1) % columns != 0 && tiles[i + columns + 1].getAdjBombs() == 0)
+        tiles[i + columns + 1].RevealTile();
+    if (i + columns - 1 < tiles.size() && (i - columns) % columns != 0 && tiles[i + columns - 1].getAdjBombs() == 0)
+        tiles[i + columns - 1].RevealTile();
+    if (i - 1 >= 0 && (i) % columns != 0 && tiles[i - 1].getAdjBombs() == 0)
+        tiles[i - 1].RevealTile();
+    if (i + 1 < tiles.size() && (i + 1) % columns != 0 && tiles[i + 1].getAdjBombs() == 0)
+        tiles[i + 1].RevealTile();
+}
 
 

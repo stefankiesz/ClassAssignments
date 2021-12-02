@@ -25,6 +25,7 @@ Tile::Tile()
 	debugOn = false;
 	adjChecked = false;
 	lostGame = false;
+	wonGame = false;
 }
 
 void Tile::SetPosition(float xPos, float yPos)
@@ -52,6 +53,11 @@ void Tile::Draw(sf::RenderWindow& window)
 				window.draw(bomb);
 		if (hasBomb && lostGame)
 			window.draw(bomb);
+		if (wonGame)
+		{
+			window.draw(hiddenTile);
+			window.draw(flag);
+		}
 	}
 	else
 	{
@@ -144,4 +150,9 @@ bool Tile::GetHasFlag()
 void Tile::LostGame()
 {
 	lostGame = true;
+}
+
+void Tile::WonGame()
+{
+	wonGame = true;
 }

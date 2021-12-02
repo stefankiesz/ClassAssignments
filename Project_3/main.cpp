@@ -18,9 +18,10 @@ int main()
 {
     int columns = 25;
     int rows = 16;
-    int bombs = 75;
+    int bombs = 10;
     bool gameOver = false;
-
+    bool gameWon = false;
+    int unrevTiles = columns * rows - bombs;
     
     sf::RenderWindow window(sf::VideoMode(columns * 32, rows*32 + 88), "Minesweeper");
 
@@ -34,6 +35,10 @@ int main()
     sf::Sprite sadFace;
     sadFace.setTexture(TextureManager::GetTexture("face_lose"));
     sadFace.setPosition(window.getSize().x / 2 - 32, window.getSize().y - 88);
+
+    sf::Sprite winFace;
+    winFace.setTexture(TextureManager::GetTexture("face_win"));
+    winFace.setPosition(window.getSize().x / 2 - 32, window.getSize().y - 88);
 
     sf::Sprite debug;
     debug.setTexture(TextureManager::GetTexture("debug"));
@@ -65,7 +70,7 @@ int main()
                     sf::Vector2f mousePosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
                     for ( int i = 0; i < tiles.size(); i++)
                     {
-                        if (tiles[i].GetBounds().contains(mousePosition) && !gameOver)
+                        if (tiles[i].GetBounds().contains(mousePosition) && !gameOver && !gameWon)
                         {
                             if (tiles[i].GetHidden() && !tiles[i].getHasBomb())
                             {
@@ -84,6 +89,26 @@ int main()
                             tiles[i].RevealTile();
                             
                         }
+                        
+                    }
+                    int counter = 0;
+                    for (int i = 0; i < tiles.size(); i++)
+                    {
+                        if (tiles[i].GetHidden() && !tiles[i].getHasBomb())
+                            counter++;
+                    }
+                    unrevTiles = counter;
+
+                    if (unrevTiles == 0)
+                    {
+                        gameWon = true;
+                        for (unsigned int i = 0; i < tiles.size(); i++)
+                        {
+                            tiles[i].WonGame();
+                            /*if (tiles[i].getHasBomb())
+                                if(!tiles[i].GetHasFlag())
+                                    tiles[i].ToggleFlag();*/
+                        }
                     }
                     if (debug.getGlobalBounds().contains(mousePosition))
                     {
@@ -97,6 +122,7 @@ int main()
                         for (unsigned int i = 0; i < tiles.size(); i++)
                         {
                             gameOver = false;
+                            gameWon = false;
                             NewBoard(columns, rows, bombs, tiles);
                         }
                     }
@@ -126,6 +152,8 @@ int main()
         window.draw(smiley);
         if (gameOver)
             window.draw(sadFace);
+        if (gameWon)
+            window.draw(winFace);
         window.draw(debug);
         window.draw(test1);
         window.draw(test2);

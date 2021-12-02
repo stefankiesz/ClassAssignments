@@ -22,6 +22,7 @@ class Tile
 	bool debugOn;
 	bool adjChecked;
 	bool lostGame;
+	bool wonGame;
 
 public:
 	Tile();
@@ -41,6 +42,7 @@ public:
 	void SetAdjCheckedTrue();
 	bool GetHasFlag();
 	void LostGame();
+	void WonGame();
 
 };
 

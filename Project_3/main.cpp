@@ -173,7 +173,7 @@ void ClearAdj(vector<Tile>& tiles, int columns, int i, bool first)
 {
   
     if (tiles[i].getHasBomb() == false && (first || (!first && tiles[i].getAdjBombs() == 0)) && !tiles[i].GetAdjChecked() &&
-        tiles[i].getAdjBombs() == 0)
+        tiles[i].getAdjBombs() == 0 && !tiles[i].GetHasFlag())
     {
         tiles[i].SetAdjCheckedTrue();
         if (i - columns >= 0 && tiles[i - columns].getHasBomb() == false)

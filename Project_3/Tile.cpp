@@ -15,9 +15,6 @@ Tile::Tile()
 	flag.setTexture(TextureManager::GetTexture("flag"));
 	bomb.setTexture(TextureManager::GetTexture("mine"));
 	
-
-
-
 	hidden = true;
 	flagged = false;
 	hasBomb = false;
@@ -48,9 +45,8 @@ void Tile::Draw(sf::RenderWindow& window)
 			window.draw(revTile);
 		if (flagged)
 			window.draw(flag);
-		else
-			if (debugOn && hasBomb)
-				window.draw(bomb);
+		if (debugOn && hasBomb)
+			window.draw(bomb);
 		if (hasBomb && lostGame)
 			window.draw(bomb);
 		if (wonGame)

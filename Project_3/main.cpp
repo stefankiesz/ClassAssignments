@@ -19,7 +19,7 @@ int main()
     int columns = 25;
     int rows = 16;
     int bombs = 75;
-
+    bool gameOver = false;
 
     
     sf::RenderWindow window(sf::VideoMode(columns * 32, rows*32 + 88), "Minesweeper");
@@ -30,6 +30,10 @@ int main()
     sf::Sprite smiley;
     smiley.setTexture(TextureManager::GetTexture("face_happy"));
     smiley.setPosition(window.getSize().x/2 - 32, window.getSize().y - 88);
+    
+    sf::Sprite sadFace;
+    sadFace.setTexture(TextureManager::GetTexture("face_lose"));
+    sadFace.setPosition(window.getSize().x / 2 - 32, window.getSize().y - 88);
 
     sf::Sprite debug;
     debug.setTexture(TextureManager::GetTexture("debug"));
@@ -61,12 +65,14 @@ int main()
                     sf::Vector2f mousePosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
                     for ( int i = 0; i < tiles.size(); i++)
                     {
-                        if (tiles[i].GetBounds().contains(mousePosition))
+                        if (tiles[i].GetBounds().contains(mousePosition) && !gameOver)
                         {
                             if (tiles[i].GetHidden() && !tiles[i].getHasBomb())
                             {
                                 ClearAdj(tiles, columns, i, true);
                             }
+                            if (tiles[i].getHasBomb())
+                                gameOver = true;
                             tiles[i].RevealTile();
                         }
                     }
@@ -81,6 +87,7 @@ int main()
                     {
                         for (unsigned int i = 0; i < tiles.size(); i++)
                         {
+                            gameOver = false;
                             NewBoard(columns, rows, bombs, tiles);
                         }
                     }
@@ -101,13 +108,15 @@ int main()
         }
 
         window.clear();
-       
+        
         for (int i = 0; i < tiles.size(); i++)
         {
             tiles[i].Draw(window);
         }
 
         window.draw(smiley);
+        if (gameOver)
+            window.draw(sadFace);
         window.draw(debug);
         window.draw(test1);
         window.draw(test2);

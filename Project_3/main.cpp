@@ -12,57 +12,21 @@ using namespace std;
 
 
 void ClearAdj(vector<Tile>& tiles, int columns, int i, bool first);
+void NewBoard(int columns, int rows, int bombs, vector<Tile>& tiles);
 
 int main()
 {
     int columns = 25;
     int rows = 16;
-    int bombs = 100;
+    int bombs = 75;
 
 
     
     sf::RenderWindow window(sf::VideoMode(columns * 32, rows*32 + 88), "Minesweeper");
 
-    Tile myTile;
-    myTile.SetPosition(100, 200);
     vector<Tile> tiles;
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            myTile.SetPosition(32 * j, 32 * i);
-            tiles.push_back(myTile);
-        }
-    }
-
-    vector<int> bombIndexes;
-    for (int i = 0; i < bombs; i++)
-    {
-        int num = Random::Int(0, tiles.size() - 1);
-        tiles[num].PlaceBomb();
-    }
-
-    for (int i = 0; i < tiles.size(); i++)
-    {
-        if(i - columns >= 0 && tiles[i - columns].getHasBomb())
-            tiles[i].addAdjBomb();
-        if (i - columns + 1 >= 0 && (i - columns + 1) % columns != 0 && tiles[i - columns + 1].getHasBomb())
-            tiles[i].addAdjBomb();
-        if (i - columns - 1 >= 0 && (i - columns) % columns != 0 && tiles[i - columns - 1].getHasBomb())
-            tiles[i].addAdjBomb();
-        if (i + columns < tiles.size() && tiles[i + columns].getHasBomb())
-            tiles[i].addAdjBomb();
-        if (i + columns + 1 < tiles.size() && (i + columns + 1) % columns != 0 && tiles[i + columns + 1].getHasBomb())
-            tiles[i].addAdjBomb();
-        if (i + columns - 1 < tiles.size() && (i - columns) % columns != 0 && tiles[i + columns - 1].getHasBomb())
-            tiles[i].addAdjBomb();
-        if (i - 1 >= 0 && (i) % columns != 0 && tiles[i-1].getHasBomb())
-            tiles[i].addAdjBomb();
-        if (i + 1 < tiles.size() && (i+1) % columns != 0 && tiles[i + 1].getHasBomb())
-            tiles[i].addAdjBomb();
-        tiles[i].setNum();
-    }
-    
+    NewBoard(columns, rows, bombs, tiles);
+   
 
     sf::Sprite smiley;
     smiley.setTexture(TextureManager::GetTexture("face_happy"));
@@ -216,4 +180,46 @@ void ClearAdj(vector<Tile>& tiles, int columns, int i, bool first)
         }
     }
     
+}
+
+
+void NewBoard(int columns, int rows, int bombs, vector<Tile>& tiles)
+{
+    Tile myTile;
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            myTile.SetPosition(32 * j, 32 * i);
+            tiles.push_back(myTile);
+        }
+    }
+
+    vector<int> bombIndexes;
+    for (int i = 0; i < bombs; i++)
+    {
+        int num = Random::Int(0, tiles.size() - 1);
+        tiles[num].PlaceBomb();
+    }
+
+    for (int i = 0; i < tiles.size(); i++)
+    {
+        if (i - columns >= 0 && tiles[i - columns].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i - columns + 1 >= 0 && (i - columns + 1) % columns != 0 && tiles[i - columns + 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i - columns - 1 >= 0 && (i - columns) % columns != 0 && tiles[i - columns - 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + columns < tiles.size() && tiles[i + columns].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + columns + 1 < tiles.size() && (i + columns + 1) % columns != 0 && tiles[i + columns + 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + columns - 1 < tiles.size() && (i - columns) % columns != 0 && tiles[i + columns - 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i - 1 >= 0 && (i) % columns != 0 && tiles[i - 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + 1 < tiles.size() && (i + 1) % columns != 0 && tiles[i + 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        tiles[i].setNum();
+    }
 }

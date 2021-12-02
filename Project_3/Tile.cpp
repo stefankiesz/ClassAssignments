@@ -24,6 +24,7 @@ Tile::Tile()
 	adjBombs = 0;
 	debugOn = false;
 	adjChecked = false;
+	lostGame = false;
 }
 
 void Tile::SetPosition(float xPos, float yPos)
@@ -42,24 +43,30 @@ void Tile::Draw(sf::RenderWindow& window)
 	if (hidden)
 	{
 		window.draw(hiddenTile);
+		if (hasBomb && lostGame)
+			window.draw(revTile);
 		if (flagged)
 			window.draw(flag);
 		else
 			if (debugOn && hasBomb)
 				window.draw(bomb);
+		if (hasBomb && lostGame)
+			window.draw(bomb);
 	}
 	else
 	{
 		window.draw(revTile);
-		if (hasBomb)
+		if (hasBomb && !flagged)
 			window.draw(bomb);
 		else
 		{
-			if (adjBombs > 0 && adjBombs < 9)
+			if (!hasBomb && adjBombs > 0 && adjBombs < 9)
 			{
 				window.draw(numAdjBombs);
 			}
 		}
+		if (hasBomb && lostGame)
+			window.draw(bomb);
 	}		
 }
 
@@ -127,4 +134,14 @@ bool Tile::GetAdjChecked()
 void Tile::SetAdjCheckedTrue()
 {
 	adjChecked = true;
+}
+
+bool Tile::GetHasFlag()
+{
+	return flagged;
+}
+
+void Tile::LostGame()
+{
+	lostGame = true;
 }

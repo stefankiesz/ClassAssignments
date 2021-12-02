@@ -12,7 +12,6 @@ class Tile
 	sf::Sprite revTile;
 	sf::Sprite flag;
 	sf::Sprite bomb;
-	
 	sf::Sprite numAdjBombs;
 
 
@@ -22,7 +21,7 @@ class Tile
 	int adjBombs;
 	bool debugOn;
 	bool adjChecked;
-
+	bool lostGame;
 
 public:
 	Tile();
@@ -40,5 +39,8 @@ public:
 	bool GetHidden();
 	bool GetAdjChecked();
 	void SetAdjCheckedTrue();
+	bool GetHasFlag();
+	void LostGame();
+
 };
 

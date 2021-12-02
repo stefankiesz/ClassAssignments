@@ -71,9 +71,18 @@ int main()
                             {
                                 ClearAdj(tiles, columns, i, true);
                             }
-                            if (tiles[i].getHasBomb())
+                            if (tiles[i].getHasBomb() && !tiles[i].GetHasFlag())
+                            {
                                 gameOver = true;
+                                for (unsigned int i = 0; i < tiles.size(); i++)
+                                {
+                                    tiles[i].LostGame();
+                                    if (tiles[i].getHasBomb())
+                                        tiles[i].RevealTile();
+                                }
+                            }
                             tiles[i].RevealTile();
+                            
                         }
                     }
                     if (debug.getGlobalBounds().contains(mousePosition))
@@ -93,7 +102,7 @@ int main()
                     }
                 }
 
-                if (event.mouseButton.button == sf::Mouse::Right)
+                if (event.mouseButton.button == sf::Mouse::Right && !gameOver)
                 {
                     sf::Vector2f mousePosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
                     for (unsigned int i = 0; i < tiles.size(); i++)

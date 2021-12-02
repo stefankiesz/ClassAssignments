@@ -27,7 +27,6 @@ int main()
     vector<Tile> tiles;
     NewBoard(columns, rows, bombs, tiles);
    
-
     sf::Sprite smiley;
     smiley.setTexture(TextureManager::GetTexture("face_happy"));
     smiley.setPosition(window.getSize().x/2 - 32, window.getSize().y - 88);
@@ -76,6 +75,13 @@ int main()
                         for (unsigned int i = 0; i < tiles.size(); i++)
                         {
                            tiles[i].ToggleDebug();
+                        }
+                    }
+                    if (smiley.getGlobalBounds().contains(mousePosition))
+                    {
+                        for (unsigned int i = 0; i < tiles.size(); i++)
+                        {
+                            NewBoard(columns, rows, bombs, tiles);
                         }
                     }
                 }
@@ -185,6 +191,7 @@ void ClearAdj(vector<Tile>& tiles, int columns, int i, bool first)
 
 void NewBoard(int columns, int rows, int bombs, vector<Tile>& tiles)
 {
+    tiles.clear();
     Tile myTile;
     for (int i = 0; i < rows; i++)
     {

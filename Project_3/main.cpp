@@ -20,9 +20,21 @@ void NewBoard(int columns, int rows, vector<int>& bombIndexes, vector<Tile>& til
 
 int main()
 {
-    int columns = 25;
-    int rows = 16;
-    int bombs = 2;
+    ifstream file("boards/config.cfg");
+    string value;
+    vector<int> bombIndexes;
+    int columns;
+    file >> columns;
+    int rows;
+    file >> rows;
+    int bombs;
+    file >> bombs;
+    file.close();
+
+    //int columns = 25;
+    //int rows = 16;
+    //int bombs = 2;
+
     bool gameOver = false;
     bool gameWon = false;
     int unrevTiles = columns * rows - bombs;
@@ -143,8 +155,6 @@ int main()
                         }
                         for (int i = 0; i < lines.size(); i++)
                         {
-                            cout << lines[i];
-
                             if (lines[i] == '1')
                             {
                                 bombIndexes.push_back(i);
@@ -168,8 +178,6 @@ int main()
                         }
                         for (int i = 0; i < lines.size(); i++)
                         {
-                            cout << lines[i];
-
                             if (lines[i] == '1')
                             {
                                 bombIndexes.push_back(i);
@@ -192,8 +200,6 @@ int main()
                         }
                         for (int i = 0; i < lines.size(); i++)
                         {
-                            cout << lines[i];
-
                             if (lines[i] == '1')
                             {
                                 bombIndexes.push_back(i);

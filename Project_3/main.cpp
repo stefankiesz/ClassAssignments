@@ -33,7 +33,7 @@ int main()
 
     //int columns = 25;
     //int rows = 16;
-    //int bombs = 2;
+    //int bombs = 400;
 
     bool gameOver = false;
     bool gameWon = false;
@@ -71,6 +71,10 @@ int main()
     sf::Sprite test3;
     test3.setTexture(TextureManager::GetTexture("test_3"));
     test3.setPosition(window.getSize().x / 2 - 32 + 64 * 5, window.getSize().y - 88);
+
+    sf::Sprite digits;
+    digits.setTexture(TextureManager::GetTexture("digits"));
+    digits.setPosition(window.getSize().x / 2 - 32 + 64 * 5, window.getSize().y - 88);
 
     while (window.isOpen())
     {
@@ -115,7 +119,7 @@ int main()
                     }
                     unrevTiles = counter;
 
-                    if (unrevTiles == 0)
+                    if (unrevTiles == 0 && !gameOver)
                     {
                         gameWon = true;
                         for (unsigned int i = 0; i < tiles.size(); i++)
@@ -333,10 +337,25 @@ void NewBoard(int columns, int rows, int bombs, vector<Tile>& tiles)
     }
 
     vector<int> bombIndexes;
-    for (int i = 0; i < bombs; i++)
+    while (bombIndexes.size() < bombs)
+    {
+        int num = Random::Int(0, tiles.size() - 1);
+        bool contains = false;
+        for (int i = 0; i < bombIndexes.size(); i++)
+            if (bombIndexes[i] == num)
+                contains = true;
+        if (!contains)
+            bombIndexes.push_back(num);
+    }
+
+    /*for (int i = 0; i < bombs; i++)
     {
         int num = Random::Int(0, tiles.size() - 1);
         tiles[num].PlaceBomb();
+    }*/
+    for (int i = 0; i < bombs; i++)
+    {
+        tiles[bombIndexes[i]].PlaceBomb();
     }
 
     for (int i = 0; i < tiles.size(); i++)

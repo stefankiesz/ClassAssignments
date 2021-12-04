@@ -2,7 +2,10 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include <string>
 #include <unordered_map>
+#include <fstream>
+#include <sstream>
 
 #include "TextureManager.h"
 #include "Tile.h"
@@ -13,12 +16,13 @@ using namespace std;
 
 void ClearAdj(vector<Tile>& tiles, int columns, int i, bool first);
 void NewBoard(int columns, int rows, int bombs, vector<Tile>& tiles);
+void NewBoard(int columns, int rows, vector<int>& bombIndexes, vector<Tile>& tiles);
 
 int main()
 {
     int columns = 25;
     int rows = 16;
-    int bombs = 10;
+    int bombs = 2;
     bool gameOver = false;
     bool gameWon = false;
     int unrevTiles = columns * rows - bombs;
@@ -125,6 +129,80 @@ int main()
                             gameWon = false;
                             NewBoard(columns, rows, bombs, tiles);
                         }
+                    }
+                    if (test1.getGlobalBounds().contains(mousePosition))
+                    {
+                        //ifstream inFile("/boards/testboard1.brd");
+                        ifstream inFile("boards/testboard1.brd");
+                        string lines = "";
+                        string value;
+                        vector<int> bombIndexes;
+                        while (inFile >> value)
+                        {
+                            lines.append(value);
+                        }
+                        for (int i = 0; i < lines.size(); i++)
+                        {
+                            cout << lines[i];
+
+                            if (lines[i] == '1')
+                            {
+                                bombIndexes.push_back(i);
+                            }
+                        }
+                        inFile.close();
+                        gameOver = false;
+                        gameWon = false;
+                        NewBoard(columns, rows, bombIndexes, tiles);
+                    }
+                    if (test2.getGlobalBounds().contains(mousePosition))
+                    {
+                        //ifstream inFile("/boards/testboard1.brd");
+                        ifstream inFile("boards/testboard2.brd");
+                        string lines = "";
+                        string value;
+                        vector<int> bombIndexes;
+                        while (inFile >> value)
+                        {
+                            lines.append(value);
+                        }
+                        for (int i = 0; i < lines.size(); i++)
+                        {
+                            cout << lines[i];
+
+                            if (lines[i] == '1')
+                            {
+                                bombIndexes.push_back(i);
+                            }
+                        }
+                        inFile.close();
+                        gameOver = false;
+                        gameWon = false;
+                        NewBoard(columns, rows, bombIndexes, tiles);
+                    }if (test3.getGlobalBounds().contains(mousePosition))
+                    {
+                        //ifstream inFile("/boards/testboard1.brd");
+                        ifstream inFile("boards/testboard3.brd");
+                        string lines = "";
+                        string value;
+                        vector<int> bombIndexes;
+                        while (inFile >> value)
+                        {
+                            lines.append(value);
+                        }
+                        for (int i = 0; i < lines.size(); i++)
+                        {
+                            cout << lines[i];
+
+                            if (lines[i] == '1')
+                            {
+                                bombIndexes.push_back(i);
+                            }
+                        }
+                        inFile.close();
+                        gameOver = false;
+                        gameWon = false;
+                        NewBoard(columns, rows, bombIndexes, tiles);
                     }
                 }
 
@@ -253,6 +331,47 @@ void NewBoard(int columns, int rows, int bombs, vector<Tile>& tiles)
     {
         int num = Random::Int(0, tiles.size() - 1);
         tiles[num].PlaceBomb();
+    }
+
+    for (int i = 0; i < tiles.size(); i++)
+    {
+        if (i - columns >= 0 && tiles[i - columns].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i - columns + 1 >= 0 && (i - columns + 1) % columns != 0 && tiles[i - columns + 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i - columns - 1 >= 0 && (i - columns) % columns != 0 && tiles[i - columns - 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + columns < tiles.size() && tiles[i + columns].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + columns + 1 < tiles.size() && (i + columns + 1) % columns != 0 && tiles[i + columns + 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + columns - 1 < tiles.size() && (i - columns) % columns != 0 && tiles[i + columns - 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i - 1 >= 0 && (i) % columns != 0 && tiles[i - 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        if (i + 1 < tiles.size() && (i + 1) % columns != 0 && tiles[i + 1].getHasBomb())
+            tiles[i].addAdjBomb();
+        tiles[i].setNum();
+    }
+}
+
+void NewBoard(int columns, int rows, vector<int>& bombIndexes, vector<Tile>& tiles)
+{
+    tiles.clear();
+    Tile myTile;
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            myTile.SetPosition(32 * j, 32 * i);
+            tiles.push_back(myTile);
+        }
+    }
+
+    for (int i = 0; i < bombIndexes.size(); i++)
+    {
+        cout << bombIndexes[i] << endl;
+        tiles[bombIndexes[i]].PlaceBomb();
     }
 
     for (int i = 0; i < tiles.size(); i++)

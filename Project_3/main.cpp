@@ -29,7 +29,10 @@ int main()
     file >> rows;
     int bombs;
     file >> bombs;
+    int origBombs = bombs;
     file.close();
+
+    int flags = 0;
 
     //int columns = 25;
     //int rows = 16;
@@ -74,10 +77,14 @@ int main()
 
     sf::Sprite digits;
     digits.setTexture(TextureManager::GetTexture("digits"));
-    digits.setPosition(window.getSize().x / 2 - 32 + 64 * 5, window.getSize().y - 88);
+    digits.setPosition(21, window.getSize().y - 88);
+
+    sf::RectangleShape rect(sf::Vector2f(columns * 32, rows *32 + 88));
+    rect.setFillColor(sf::Color(255, 255, 255));
 
     while (window.isOpen())
     {
+        
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -121,6 +128,7 @@ int main()
 
                     if (unrevTiles == 0 && !gameOver)
                     {
+                        flags = bombs;
                         gameWon = true;
                         for (unsigned int i = 0; i < tiles.size(); i++)
                         {
@@ -143,12 +151,13 @@ int main()
                         {
                             gameOver = false;
                             gameWon = false;
+                            flags = 0;
+                            bombs = origBombs;
                             NewBoard(columns, rows, bombs, tiles);
                         }
                     }
                     if (test1.getGlobalBounds().contains(mousePosition))
                     {
-                        //ifstream inFile("/boards/testboard1.brd");
                         ifstream inFile("boards/testboard1.brd");
                         string lines = "";
                         string value;
@@ -167,11 +176,12 @@ int main()
                         inFile.close();
                         gameOver = false;
                         gameWon = false;
+                        flags = 0;
+                        bombs = bombIndexes.size();
                         NewBoard(columns, rows, bombIndexes, tiles);
                     }
                     if (test2.getGlobalBounds().contains(mousePosition))
                     {
-                        //ifstream inFile("/boards/testboard1.brd");
                         ifstream inFile("boards/testboard2.brd");
                         string lines = "";
                         string value;
@@ -190,10 +200,11 @@ int main()
                         inFile.close();
                         gameOver = false;
                         gameWon = false;
+                        flags = 0;
+                        bombs = bombIndexes.size();
                         NewBoard(columns, rows, bombIndexes, tiles);
                     }if (test3.getGlobalBounds().contains(mousePosition))
                     {
-                        //ifstream inFile("/boards/testboard1.brd");
                         ifstream inFile("boards/testboard3.brd");
                         string lines = "";
                         string value;
@@ -212,6 +223,8 @@ int main()
                         inFile.close();
                         gameOver = false;
                         gameWon = false;
+                        flags = 0;
+                        bombs = bombIndexes.size();
                         NewBoard(columns, rows, bombIndexes, tiles);
                     }
                 }
@@ -219,10 +232,18 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Right && !gameOver)
                 {
                     sf::Vector2f mousePosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
-                    for (unsigned int i = 0; i < tiles.size(); i++)
-                    {
-                        if (tiles[i].GetBounds().contains(mousePosition))
-                            tiles[i].ToggleFlag();
+                    if (!gameOver && !gameWon) {
+                        for (unsigned int i = 0; i < tiles.size(); i++)
+                        {
+                            if (tiles[i].GetBounds().contains(mousePosition) && tiles[i].GetHidden())
+                            {
+                                tiles[i].ToggleFlag();
+                                if (tiles[i].GetHasFlag())
+                                    flags++;
+                                else
+                                    flags--;
+                            }
+                        }
                     }
                 }
                 
@@ -231,6 +252,7 @@ int main()
         }
 
         window.clear();
+        window.draw(rect);
         
         for (int i = 0; i < tiles.size(); i++)
         {
@@ -246,7 +268,32 @@ int main()
         window.draw(test1);
         window.draw(test2);
         window.draw(test3);
+        
+        if (bombs - flags < 0)
+        {
+            digits.setPosition(0, window.getSize().y - 88);
+            digits.setTextureRect(sf::IntRect(210, 0, 21, 32));
+            window.draw(digits);
+        }
 
+        int dig1 = abs((bombs - flags) / 100) % 10;
+        int dig2 = abs((bombs - flags) / 10) % 10;
+        int dig3 = abs((bombs - flags)) % 10;
+        
+        digits.setPosition(21, window.getSize().y - 88);
+        digits.setTextureRect(sf::IntRect(0 + 21 * dig1, 0, 21, 32));
+        window.draw(digits);
+
+        digits.setPosition(42, window.getSize().y - 88);
+        digits.setTextureRect(sf::IntRect(0 + 21 * dig2, 0, 21, 32));
+        window.draw(digits);
+
+        digits.setPosition(63, window.getSize().y - 88);
+        digits.setTextureRect(sf::IntRect(0 + 21 * dig3, 0, 21, 32));
+        window.draw(digits);
+        
+
+        
 
         window.display();
     }
@@ -255,7 +302,6 @@ int main()
 
     return 0;
 }
-
 
 void ClearAdj(vector<Tile>& tiles, int columns, int i, bool first)
 {
@@ -321,7 +367,6 @@ void ClearAdj(vector<Tile>& tiles, int columns, int i, bool first)
     }
     
 }
-
 
 void NewBoard(int columns, int rows, int bombs, vector<Tile>& tiles)
 {
@@ -395,7 +440,6 @@ void NewBoard(int columns, int rows, vector<int>& bombIndexes, vector<Tile>& til
 
     for (int i = 0; i < bombIndexes.size(); i++)
     {
-        cout << bombIndexes[i] << endl;
         tiles[bombIndexes[i]].PlaceBomb();
     }
 
